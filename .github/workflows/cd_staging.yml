@@ -1,0 +1,20 @@
+name: Deploy to Staging
+on:
+  push:
+    branches:
+      - main
+jobs:
+  redeploy_everything:
+    name: Redeploying everything from main
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH  into staging server
+      - run: |
+          echo ${{ secrets.STAGING_PRIVATE_KEY }} &> ~/ssh_key 
+          ssh -i ~/ssh_key root@3.110.154.98
+          cd bms && git pull
+          pnpm install
+          pnpm build
+          pm2 restart fe-server
+          pm2 restart http-server
+          pm2 restart ws-server
