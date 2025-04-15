@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{ secrets.STAGING_PRIVATE_KEY }} &> ~/ssh_key 
+          echo "${{ secrets.STAGING_PRIVATE_KEY }}" &> ~/ssh_key 
           ssh -i ~/ssh_key root@3.110.154.98
           cd bms && git pull
           pnpm install
