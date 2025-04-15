@@ -8,8 +8,8 @@ jobs:
     name: Redeploying everything from main
     runs-on: ubuntu-latest
     steps:
-      - name: SSH  into staging server
-      - run: |
+      name: SSH  into staging server
+      run: |
           echo ${{ secrets.STAGING_PRIVATE_KEY }} &> ~/ssh_key 
           ssh -i ~/ssh_key root@3.110.154.98
           cd bms && git pull
