@@ -15,11 +15,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.STAGING_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 13.232.12.238 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 13.232.243.193 >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
-          ssh ubuntu@13.232.12.238 
+          ssh ubuntu@13.232.243.193 
             export NVM_DIR="$HOME/.nvm"
             source "$NVM_DIR/nvm.sh"
             source ~/.bashrc  # Loads any other necessary env settings
