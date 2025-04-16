@@ -19,7 +19,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh ubuntu@13.232.12.238 << 'EOF'
+          ssh ubuntu@13.232.12.238
             export NVM_DIR="$HOME/.nvm"
             source "$NVM_DIR/nvm.sh"
             source ~/.bashrc  # Loads any other necessary env settings
