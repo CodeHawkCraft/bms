@@ -26,5 +26,6 @@ jobs:
             cd bms
             git pull origin main
             npm install
+            npm install -g pm2
             pm2 restart all
           EOF
