@@ -1,28 +1,31 @@
-# added changes
 name: Deploy to Staging
+
 on:
   push:
     branches:
       - main
+
 jobs:
   redeploy_everything:
     name: Redeploying everything from main
     runs-on: ubuntu-latest
+
     steps:
-      - run: |
+      - name: Set up SSH
+        run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.STAGING_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 3.110.175.1 >> ~/.ssh/known_hosts
 
-      - run: |
-          ssh-keyscan -H 3.110.154.98 >> ~/.ssh/known_hosts
-
-      - run: |
-          ssh -i ~/.ssh/id_rsa root@3.110.154.98
-          cd bms
-          git pull
-          pnpm install
-          pnpm build
-          pm2 restart fe-server
-          pm2 restart http-server
-          pm2 restart ws-server
+      - name: SSH and Deploy
+        run: |
+          ssh -i ~/.ssh/id_rsa root@3.110.175.1.98 << 'EOF'
+            cd /home/ubuntu/bms
+            git pull
+            pnpm install
+            pnpm build
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
+          EOF
