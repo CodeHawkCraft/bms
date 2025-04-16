@@ -23,9 +23,11 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh ubuntu@13.232.12.238 << 'EOF'
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            source ~/.bashrc  # Loads any other necessary env settings
             cd bms
             git pull origin main
             npm install
-            npm install -g pm2
             pm2 restart all
           EOF
