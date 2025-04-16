@@ -11,20 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Test Network Connectivity
+        run: |
+          ping -c 4 3.110.175.198
+          nc -zv 3.110.175.198 22
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.STAGING_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -v -H 3.110.175.198 || { echo "ssh-keyscan failed"; exit 1; }
           ssh-keyscan -H 3.110.175.198 >> ~/.ssh/known_hosts
 
       - name: Test SSH Connection
         run: |
-          ssh -i ~/.ssh/id_rsa root@3.110.175.198 "echo 'SSH connection successful'"
+          ssh -v -i ~/.ssh/id_rsa root@3.110.175.198 "echo 'SSH connection successful'"
 
       - name: SSH and Deploy
         run: |
-          ssh -i ~/.ssh/id_rsa root@3.110.175.198 << 'EOF'
+          ssh -v -i ~/.ssh/id_rsa root@3.110.175.198 << 'EOF'
             cd /home/ubuntu/bms
             git pull
             pnpm install
