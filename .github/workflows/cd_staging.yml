@@ -1,14 +1,12 @@
+---
 name: Deploy to EC2
-
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
-
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Set up SSH
         run: |
@@ -16,7 +14,6 @@ jobs:
           echo "${{ secrets.STAGING_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 13.232.12.238 >> ~/.ssh/known_hosts
-
       - name: Deploy to EC2
         run: |
           ssh ubuntu@13.232.12.238
@@ -27,4 +24,3 @@ jobs:
             git pull origin main
             npm install
             pm2 restart all
-          EOF
